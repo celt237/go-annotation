@@ -29,31 +29,57 @@ func TestAnnotation(t *testing.T) {
 	tests := []struct {
 		name       string
 		fileName   string
+		mode       AnnotationMode
 		wantResult *FileDesc
 		wantErr    bool
 	}{
 		{
 			name:       "数组模式单接口测试",
 			fileName:   "test/data/arraymode/arraymode_single_interface.go",
+			mode:       AnnotationModeArray,
 			wantResult: get_arraymode_single_interface("test/data/arraymode/arraymode_single_interface.json"),
 			wantErr:    false,
 		},
 		{
 			name:       "数组模式单结构体测试",
 			fileName:   "test/data/arraymode/arraymode_single_struct.go",
+			mode:       AnnotationModeArray,
 			wantResult: get_arraymode_single_interface("test/data/arraymode/arraymode_single_struct.json"),
 			wantErr:    false,
 		},
 		{
 			name:       "数组模式混合测试",
 			fileName:   "test/data/arraymode/arraymode_mult.go",
+			mode:       AnnotationModeArray,
 			wantResult: get_arraymode_single_interface("test/data/arraymode/arraymode_mult.json"),
+			wantErr:    false,
+		},
+		{
+			name:       "map模式单接口测试",
+			fileName:   "test/data/mapmode/mapmode_single_interface.go",
+			mode:       AnnotationModeMap,
+			wantResult: get_arraymode_single_interface("test/data/mapmode/mapmode_single_interface.json"),
+			wantErr:    false,
+		},
+		{
+			name:       "map模式单结构体测试",
+			fileName:   "test/data/mapmode/mapmode_single_struct.go",
+			mode:       AnnotationModeMap,
+			wantResult: get_arraymode_single_interface("test/data/mapmode/mapmode_single_struct.json"),
+			wantErr:    false,
+		},
+		{
+			name:       "map模式混合测试",
+			fileName:   "test/data/mapmode/mapmode_mult.go",
+			mode:       AnnotationModeMap,
+			wantResult: get_arraymode_single_interface("test/data/mapmode/mapmode_mult.json"),
 			wantErr:    false,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			CurrentAnnotationMode = tt.mode
 			fileParser := GetFileParser(tt.fileName)
 			fileDesc, err := fileParser.Parse()
 			if (err != nil) != tt.wantErr {
@@ -114,34 +140,3 @@ func deepCompare(a, b interface{}, fieldName string) bool {
 	}
 	return equal
 }
-
-//{
-//name:       "数组模式单结构体测试",
-//fileName:   "data/arraymode/arraymode_single_struct.go",
-//wantResult: 1,
-//wantErr:    false,
-//},
-//{
-//name:       "数组模式混合测试",
-//fileName:   "data/arraymode/arraymode_mult.go",
-//wantResult: 1,
-//wantErr:    false,
-//},
-//{
-//name:       "map模式单接口测试",
-//fileName:   "data/arraymode/mapmode_single_interface.go",
-//wantResult: 1,
-//wantErr:    false,
-//},
-//{
-//name:       "map模式单结构体测试",
-//fileName:   "data/arraymode/mapmode_single_struct.go",
-//wantResult: 1,
-//wantErr:    false,
-//},
-//{
-//name:       "map模式混合测试",
-//fileName:   "data/arraymode/mapmode_mult.go",
-//wantResult: 1,
-//wantErr:    false,
-//},

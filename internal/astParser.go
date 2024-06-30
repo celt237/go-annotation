@@ -127,6 +127,10 @@ func parseAnnotation(comments []string, mode AnnotationMode) (annotations map[st
 					}
 					attributeName := strings.TrimSpace(itemSlice[0])
 					attributeValue := strings.TrimSpace(itemSlice[1])
+					// attributeValue去掉引号
+					if strings.HasPrefix(attributeValue, "\"") && strings.HasSuffix(attributeValue, "\"") {
+						attributeValue = attributeValue[1 : len(attributeValue)-1]
+					}
 					attribute[attributeName] = attributeValue
 				}
 				if _, ok := annotations[name]; ok {
