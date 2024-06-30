@@ -1,0 +1,173 @@
+{
+  "PackageName": "arraymode",
+  "FullPackageName": "github.com/celt237/go-annotation/internal/test/data/arraymode",
+  "FileName": "arraymode_single_struct.go",
+  "Imports": {
+    "data": {
+      "Name": "data",
+      "HasAlias": false,
+      "Path": "github.com/celt237/go-annotation/internal/test/data"
+    }
+  },
+  "Structs": [
+    {
+      "Name": "StructOne",
+      "Imports": {
+        "data": {
+          "Name": "data",
+          "HasAlias": false,
+          "Path": "github.com/celt237/go-annotation/internal/test/data"
+        }
+      },
+      "Comments": [
+        "annotation"
+      ],
+      "Annotations": {
+        "annotation": {
+          "Name": "annotation",
+          "Attributes": []
+        }
+      },
+      "Methods": [
+        {
+          "Name": "Method1",
+          "Comments": [
+            "annotation test"
+          ],
+          "Annotations": {
+            "annotation": {
+              "Name": "annotation",
+              "Attributes": [{"0": "test"}]
+            }
+          },
+          "Params": [
+            {
+              "Name": "a1",
+              "DataType": "*data.A1",
+              "PackageName": "data",
+              "RealDataType": "data.A1",
+              "IsPtr": true
+            },
+            {
+              "Name": "a2",
+              "DataType": "*data.A2",
+              "PackageName": "data",
+              "RealDataType": "data.A2",
+              "IsPtr": true
+            },
+            {
+              "Name": "a3",
+              "DataType": "*data.A3",
+              "PackageName": "data",
+              "RealDataType": "data.A3",
+              "IsPtr": true
+            }
+          ],
+          "Results": [
+            {
+              "Name": "",
+              "DataType": "error",
+              "PackageName": "error",
+              "RealDataType": "error",
+              "IsPtr": false
+            }
+          ],
+          "Description": "test1"
+        },
+        {
+          "Name": "Method2",
+          "Comments": [
+            "annotation test"
+          ],
+          "Annotations": {
+            "annotation": {
+              "Name": "annotation",
+              "Attributes": [{"0": "test"}]
+            }
+          },
+          "Params": [
+            {
+              "Name": "a2",
+              "DataType": "data.A2",
+              "PackageName": "data",
+              "RealDataType": "data.A2",
+              "IsPtr": false
+            }
+          ],
+          "Results": [
+            {
+              "Name": "a3",
+              "DataType": "*data.A3",
+              "PackageName": "data",
+              "RealDataType": "data.A3",
+              "IsPtr": true
+            },
+            {
+              "Name": "err",
+              "DataType": "error",
+              "PackageName": "error",
+              "RealDataType": "error",
+              "IsPtr": false
+            }
+          ],
+          "Description": "test2"
+        },
+        {
+          "Name": "Method3",
+          "Comments": [
+            "annotation test"
+          ],
+          "Annotations": {
+            "annotation": {
+              "Name": "annotation",
+              "Attributes": [{"0": "test"}]
+            }
+          },
+          "Params": [],
+          "Results": [
+            {
+              "Name": "",
+              "DataType": "data.A1",
+              "PackageName": "data",
+              "RealDataType": "data.A1",
+              "IsPtr": false
+            },
+            {
+              "Name": "",
+              "DataType": "error",
+              "PackageName": "error",
+              "RealDataType": "error",
+              "IsPtr": false
+            }
+          ],
+          "Description": "test3"
+        },
+        {
+          "Name": "Method4",
+          "Comments": [
+            "annotation test  test2"
+          ],
+          "Annotations": {
+            "annotation": {
+              "Name": "annotation",
+              "Attributes": [{"0": "test", "1": "test2"}]
+            }
+          },
+          "Params": [
+            {
+              "Name": "a3",
+              "DataType": "*data.A3",
+              "PackageName": "data",
+              "RealDataType": "data.A3",
+              "IsPtr": true
+            }
+          ],
+          "Results": [],
+          "Description": "test4"
+        }
+      ],
+      "Description": "test"
+    }
+  ],
+  "Interfaces": []
+}

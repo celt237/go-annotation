@@ -7,20 +7,29 @@ import (
 
 type InterfaceParser struct {
 	typeSpec      *ast.TypeSpec
+	genDecl       *ast.GenDecl
 	interfaceSpec *ast.InterfaceType
 	serviceName   string
+	fileImports   map[string]*ImportDesc
 }
 
-func NewInterfaceParser(serviceName string, typeSpec *ast.TypeSpec) *InterfaceParser {
-	return &InterfaceParser{serviceName: serviceName, typeSpec: typeSpec, interfaceSpec: typeSpec.Type.(*ast.InterfaceType)}
+func NewInterfaceParser(
+	serviceName string,
+	typeSpec *ast.TypeSpec,
+	genDecl *ast.GenDecl,
+	fileImports map[string]*ImportDesc) *InterfaceParser {
+	return &InterfaceParser{
+		serviceName:   serviceName,
+		typeSpec:      typeSpec,
+		genDecl:       genDecl,
+		interfaceSpec: typeSpec.Type.(*ast.InterfaceType),
+		fileImports:   fileImports,
+	}
 }
 
 func (s *InterfaceParser) Parse() (*InterfaceDesc, error) {
-	comments, err := getAtComments(s.typeSpec.Doc)
-	if err != nil {
-		return nil, err
-	}
-
+	comments := parseAtComments(s.genDecl.Doc)
+	description := parseDescription(s.serviceName, s.genDecl.Doc)
 	funcList, err := s.getFuncList()
 	if err != nil {
 		return nil, err
@@ -38,8 +47,9 @@ func (s *InterfaceParser) Parse() (*InterfaceDesc, error) {
 	}
 	sDesc := &InterfaceDesc{
 		Name:        s.serviceName,
+		Description: description,
 		Methods:     methods,
-		Imports:     make(map[string]*ImportDesc),
+		Imports:     s.parserImports(methods),
 		Comments:    comments,
 		Annotations: parseAnnotation(comments, CurrentAnnotationMode),
 	}
@@ -51,7 +61,6 @@ func (s *InterfaceParser) getFuncList() ([]*ast.Field, error) {
 	for _, method := range s.interfaceSpec.Methods.List {
 		list = append(list, method)
 	}
-
 	return list, nil
 }
 
@@ -61,7 +70,7 @@ func (s *InterfaceParser) parserMethod(method *ast.Field) (methodDesc *MethodDes
 		Params:   make([]*Field, 0),
 		Results:  make([]*Field, 0),
 	}
-	// 方法名
+	// method name
 	if method.Names == nil || len(method.Names) == 0 {
 		err = fmt.Errorf("method name is empty")
 		return
@@ -71,9 +80,9 @@ func (s *InterfaceParser) parserMethod(method *ast.Field) (methodDesc *MethodDes
 		return
 	}
 	methodDesc.Name = method.Names[0].Name
-	// 方法类型
+	// funcType
 	if funcType, ok := method.Type.(*ast.FuncType); ok {
-		// 参数
+		// params
 		if funcType.Params != nil {
 			for _, param := range funcType.Params.List {
 				field, err := parseField(param)
@@ -83,7 +92,7 @@ func (s *InterfaceParser) parserMethod(method *ast.Field) (methodDesc *MethodDes
 				methodDesc.Params = append(methodDesc.Params, field)
 			}
 		}
-		// 返回值
+		// results
 		if funcType.Results != nil {
 			for _, result := range funcType.Results.List {
 				field, err := parseField(result)
@@ -93,15 +102,32 @@ func (s *InterfaceParser) parserMethod(method *ast.Field) (methodDesc *MethodDes
 				methodDesc.Results = append(methodDesc.Results, field)
 			}
 		}
-		// 注释
-		methodDesc.Comments, err = getAtComments(method.Doc)
-		if err != nil {
-			return nil, err
-		}
+		// comment
+		methodDesc.Comments = parseAtComments(method.Doc)
+		methodDesc.Description = parseDescription(methodDesc.Name, method.Doc)
 		methodDesc.Annotations = parseAnnotation(methodDesc.Comments, CurrentAnnotationMode)
 		return methodDesc, err
 	} else {
 		err = fmt.Errorf("method type is not funcType")
 		return
 	}
+}
+
+func (s *InterfaceParser) parserImports(methods []*MethodDesc) (imports map[string]*ImportDesc) {
+	imports = make(map[string]*ImportDesc)
+	fields := make([]*Field, 0)
+	for _, method := range methods {
+		for _, param := range method.Params {
+			fields = append(fields, param)
+		}
+		for _, result := range method.Results {
+			fields = append(fields, result)
+		}
+	}
+	for _, field := range fields {
+		if imp, ok := s.fileImports[field.PackageName]; ok {
+			imports[field.PackageName] = imp
+		}
+	}
+	return imports
 }

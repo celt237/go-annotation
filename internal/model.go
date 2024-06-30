@@ -15,12 +15,13 @@ type Annotation struct {
 
 // FileDesc  文件信息
 type FileDesc struct {
-	PackageName  string // 包名
-	FileName     string // 文件名
-	RelativePath string // 相对路径
-	Imports      map[string]*ImportDesc
-	Structs      []*StructDesc
-	Interfaces   []*InterfaceDesc
+	PackageName     string // 包名
+	FullPackageName string // 完整包名
+	FileName        string // 文件名
+	//RelativePath string // todo 相对路径
+	Imports    map[string]*ImportDesc
+	Structs    []*StructDesc
+	Interfaces []*InterfaceDesc
 }
 
 // ImportDesc  import信息
@@ -37,7 +38,8 @@ type StructDesc struct {
 	Comments    []string               // 注释
 	Annotations map[string]*Annotation // 注解
 	//Fields      []*Field               // 字段 暂不支持
-	Methods []*MethodDesc
+	Methods     []*MethodDesc // 方法
+	Description string        // 描述
 }
 
 // InterfaceDesc  接口信息
@@ -46,12 +48,14 @@ type InterfaceDesc struct {
 	Imports     map[string]*ImportDesc // 导入信息
 	Comments    []string               // 注释
 	Annotations map[string]*Annotation // 注解
-	Methods     []*MethodDesc
+	Methods     []*MethodDesc          // 方法
+	Description string                 // 描述
 }
 
 // MethodDesc  方法信息
 type MethodDesc struct {
 	Name        string                 // 方法名
+	Description string                 // 描述
 	Comments    []string               // 注释
 	Annotations map[string]*Annotation // 注解
 	Params      []*Field               // 参数

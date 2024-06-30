@@ -3,23 +3,87 @@ package internal
 import (
 	"fmt"
 	"go/ast"
+	"os/exec"
+	"path/filepath"
 	"regexp"
 	"strconv"
 	"strings"
 )
 
-func getAtComments(commentGroup *ast.CommentGroup) (comments []string, err error) {
+func getFileName(filePath string) string {
+	parts := strings.Split(filePath, "/")
+	return parts[len(parts)-1]
+}
+
+// getModuleName 获取模块名
+func getModuleName() string {
+	cmd := exec.Command("go", "list", "-m")
+	output, err := cmd.Output()
+	if err != nil {
+		fmt.Println("Error finding module root:", err)
+		return ""
+	}
+	return strings.TrimSpace(string(output))
+}
+
+// getFullPackageName 获取当前文件所在完整包名
+func getFullPackageName(moduleName string, filePath string) string {
+	absolutePath, err := filepath.Abs(filePath)
+	if err != nil {
+		fmt.Println("Error getting absolute path:", err)
+		return ""
+	}
+	cmd := exec.Command("go", "list", "-m", "-f", "{{.Dir}}")
+	output, err := cmd.Output()
+	if err != nil {
+		fmt.Println("Error finding module root:", err)
+		return ""
+	}
+	moduleRoot := strings.TrimSpace(string(output))
+
+	// 计算文件路径相对于模块根目录的路径
+	relativePath, err := filepath.Rel(moduleRoot, absolutePath)
+	if err != nil {
+		fmt.Println("Error calculating relative path:", err)
+		return ""
+	}
+	// 将相对路径转换为包的导入路径
+	dirPath := filepath.Dir(relativePath)
+	importPath := filepath.ToSlash(dirPath)
+
+	fullPackageName := moduleName + "/" + importPath // 模块名 + 相对路径
+	return fullPackageName
+}
+
+func parseAtComments(commentGroup *ast.CommentGroup) (comments []string) {
 	comments = make([]string, 0)
 	if commentGroup != nil {
+		prefix := "// " + AnnotationPrefix
 		for _, com := range commentGroup.List {
-			atIndex := strings.Index(com.Text, AnnotationPrefix)
-			if atIndex != -1 {
-				commentText := com.Text[atIndex:]
+			if strings.HasPrefix(com.Text, prefix) {
+				commentText := strings.TrimPrefix(com.Text, prefix)
 				comments = append(comments, commentText)
 			}
 		}
 	}
-	return comments, err
+	return comments
+}
+
+func parseDescription(name string, commentGroup *ast.CommentGroup) (description string) {
+	if commentGroup == nil {
+		return ""
+	}
+	description = ""
+	prefix := "// " + name
+	for _, com := range commentGroup.List {
+		if strings.HasPrefix(com.Text, prefix) {
+			// 取前缀之后的内容 去掉前后空格
+			description = strings.TrimSpace(strings.TrimPrefix(com.Text, prefix))
+			break
+		}
+	}
+	return description
+
 }
 
 func parseAnnotation(comments []string, mode AnnotationMode) (annotations map[string]*Annotation) {
@@ -33,13 +97,17 @@ func parseAnnotation(comments []string, mode AnnotationMode) (annotations map[st
 			name := commentSlice[0]
 			attribute := make(map[string]string)
 			for i := 1; i < len(commentSlice); i++ {
-				attribute[strconv.Itoa(i)] = commentSlice[i]
+				attribute[strconv.Itoa(i-1)] = commentSlice[i]
 			}
 			if _, ok := annotations[name]; ok {
-				annotations[name].Attributes = append(annotations[name].Attributes, attribute)
-				continue
+				if len(attribute) > 0 {
+					annotations[name].Attributes = append(annotations[name].Attributes, attribute)
+				}
 			} else {
-				annotation := &Annotation{Name: name, Attributes: []map[string]string{attribute}}
+				annotation := &Annotation{Name: name, Attributes: []map[string]string{}}
+				if len(attribute) > 0 {
+					annotation.Attributes = append(annotation.Attributes, attribute)
+				}
 				annotations[name] = annotation
 			}
 		} else {
@@ -62,10 +130,14 @@ func parseAnnotation(comments []string, mode AnnotationMode) (annotations map[st
 					attribute[attributeName] = attributeValue
 				}
 				if _, ok := annotations[name]; ok {
-					annotations[name].Attributes = append(annotations[name].Attributes, attribute)
-					continue
+					if len(attribute) > 0 {
+						annotations[name].Attributes = append(annotations[name].Attributes, attribute)
+					}
 				} else {
-					annotation := &Annotation{Name: name, Attributes: []map[string]string{attribute}}
+					annotation := &Annotation{Name: name, Attributes: []map[string]string{}}
+					if len(attribute) > 0 {
+						annotation.Attributes = append(annotation.Attributes, attribute)
+					}
 					annotations[name] = annotation
 				}
 			} else {
