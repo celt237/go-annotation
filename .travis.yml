@@ -1,0 +1,18 @@
+language: go
+go:
+  - 1.21
+
+install:
+  - go get -t -u ./...
+  - go get -u github.com/gorilla/mux
+  - go get -u golang.org/x/tools/cmd/cover
+  - go get -u github.com/mattn/goveralls
+
+script:
+  - PATH="$HOME/gopath/bin:$PATH"
+  - make citest
+  - scripts/coverage.sh
+  - $HOME/gopath/bin/goveralls -coverprofile=.cover/cover.out -service=travis-ci
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
