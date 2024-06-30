@@ -1,16 +1,15 @@
-package test
+package internal
 
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/celt237/go-annotation/internal"
 	"io"
 	"os"
 	"reflect"
 	"testing"
 )
 
-func get_arraymode_single_interface(fileName string) *internal.FileDesc {
+func get_arraymode_single_interface(fileName string) *FileDesc {
 	jsonFile, err := os.Open(fileName)
 	if err != nil {
 		fmt.Println(err)
@@ -20,7 +19,7 @@ func get_arraymode_single_interface(fileName string) *internal.FileDesc {
 
 	byteValue, _ := io.ReadAll(jsonFile)
 
-	var obj internal.FileDesc
+	var obj FileDesc
 	json.Unmarshal(byteValue, &obj)
 	return &obj
 }
@@ -30,32 +29,32 @@ func TestAnnotation(t *testing.T) {
 	tests := []struct {
 		name       string
 		fileName   string
-		wantResult *internal.FileDesc
+		wantResult *FileDesc
 		wantErr    bool
 	}{
 		{
 			name:       "数组模式单接口测试",
-			fileName:   "data/arraymode/arraymode_single_interface.go",
-			wantResult: get_arraymode_single_interface("data/arraymode/arraymode_single_interface.json"),
+			fileName:   "test/data/arraymode/arraymode_single_interface.go",
+			wantResult: get_arraymode_single_interface("test/data/arraymode/arraymode_single_interface.json"),
 			wantErr:    false,
 		},
 		{
 			name:       "数组模式单结构体测试",
-			fileName:   "data/arraymode/arraymode_single_struct.go",
-			wantResult: get_arraymode_single_interface("data/arraymode/arraymode_single_struct.json"),
+			fileName:   "test/data/arraymode/arraymode_single_struct.go",
+			wantResult: get_arraymode_single_interface("test/data/arraymode/arraymode_single_struct.json"),
 			wantErr:    false,
 		},
 		{
 			name:       "数组模式混合测试",
-			fileName:   "data/arraymode/arraymode_mult.go",
-			wantResult: get_arraymode_single_interface("data/arraymode/arraymode_mult.json"),
+			fileName:   "test/data/arraymode/arraymode_mult.go",
+			wantResult: get_arraymode_single_interface("test/data/arraymode/arraymode_mult.json"),
 			wantErr:    false,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			fileParser := internal.GetFileParser(tt.fileName)
+			fileParser := GetFileParser(tt.fileName)
 			fileDesc, err := fileParser.Parse()
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Parse() error = %v, wantErr %v", err, tt.wantErr)
