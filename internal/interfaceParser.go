@@ -51,7 +51,7 @@ func (s *InterfaceParser) Parse() (*InterfaceDesc, error) {
 		Methods:     methods,
 		Imports:     s.parserImports(methods),
 		Comments:    comments,
-		Annotations: parseAnnotation(comments, CurrentAnnotationMode),
+		Annotations: getAnnotationParser(CurrentAnnotationMode).Parse(comments),
 	}
 	return sDesc, nil
 }
@@ -105,7 +105,7 @@ func (s *InterfaceParser) parserMethod(method *ast.Field) (methodDesc *MethodDes
 		// comment
 		methodDesc.Comments = parseAtComments(method.Doc)
 		methodDesc.Description = parseDescription(methodDesc.Name, method.Doc)
-		methodDesc.Annotations = parseAnnotation(methodDesc.Comments, CurrentAnnotationMode)
+		methodDesc.Annotations = getAnnotationParser(CurrentAnnotationMode).Parse(methodDesc.Comments)
 		return methodDesc, err
 	} else {
 		err = fmt.Errorf("method type is not funcType")

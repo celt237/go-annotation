@@ -9,7 +9,7 @@ import (
 	"testing"
 )
 
-func get_arraymode_single_interface(fileName string) *FileDesc {
+func getInstanceFromJsonFile(fileName string) *FileDesc {
 	jsonFile, err := os.Open(fileName)
 	if err != nil {
 		fmt.Println(err)
@@ -37,42 +37,42 @@ func TestAnnotation(t *testing.T) {
 			name:       "数组模式单接口测试",
 			fileName:   "test/data/arraymode/arraymode_single_interface.go",
 			mode:       AnnotationModeArray,
-			wantResult: get_arraymode_single_interface("test/data/arraymode/arraymode_single_interface.json"),
+			wantResult: getInstanceFromJsonFile("test/data/arraymode/arraymode_single_interface.json"),
 			wantErr:    false,
 		},
 		{
 			name:       "数组模式单结构体测试",
 			fileName:   "test/data/arraymode/arraymode_single_struct.go",
 			mode:       AnnotationModeArray,
-			wantResult: get_arraymode_single_interface("test/data/arraymode/arraymode_single_struct.json"),
+			wantResult: getInstanceFromJsonFile("test/data/arraymode/arraymode_single_struct.json"),
 			wantErr:    false,
 		},
 		{
 			name:       "数组模式混合测试",
 			fileName:   "test/data/arraymode/arraymode_mult.go",
 			mode:       AnnotationModeArray,
-			wantResult: get_arraymode_single_interface("test/data/arraymode/arraymode_mult.json"),
+			wantResult: getInstanceFromJsonFile("test/data/arraymode/arraymode_mult.json"),
 			wantErr:    false,
 		},
 		{
 			name:       "map模式单接口测试",
 			fileName:   "test/data/mapmode/mapmode_single_interface.go",
 			mode:       AnnotationModeMap,
-			wantResult: get_arraymode_single_interface("test/data/mapmode/mapmode_single_interface.json"),
+			wantResult: getInstanceFromJsonFile("test/data/mapmode/mapmode_single_interface.json"),
 			wantErr:    false,
 		},
 		{
 			name:       "map模式单结构体测试",
 			fileName:   "test/data/mapmode/mapmode_single_struct.go",
 			mode:       AnnotationModeMap,
-			wantResult: get_arraymode_single_interface("test/data/mapmode/mapmode_single_struct.json"),
+			wantResult: getInstanceFromJsonFile("test/data/mapmode/mapmode_single_struct.json"),
 			wantErr:    false,
 		},
 		{
 			name:       "map模式混合测试",
 			fileName:   "test/data/mapmode/mapmode_mult.go",
 			mode:       AnnotationModeMap,
-			wantResult: get_arraymode_single_interface("test/data/mapmode/mapmode_mult.json"),
+			wantResult: getInstanceFromJsonFile("test/data/mapmode/mapmode_mult.json"),
 			wantErr:    false,
 		},
 	}

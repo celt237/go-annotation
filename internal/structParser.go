@@ -50,7 +50,7 @@ func (s *StructParser) Parse() (*StructDesc, error) {
 		Methods:     methods,
 		Imports:     s.parserImports(methods),
 		Comments:    comments,
-		Annotations: parseAnnotation(comments, CurrentAnnotationMode),
+		Annotations: getAnnotationParser(CurrentAnnotationMode).Parse(comments),
 	}
 	return sDesc, nil
 }
@@ -77,9 +77,6 @@ func (s *StructParser) parserMethod(method *ast.FuncDecl) (methodDesc *MethodDes
 	methodDesc = &MethodDesc{}
 	methodDesc.Name = method.Name.Name
 	// params
-	//if method.Type.Params != nil && method.Type.Params.List != nil && len(method.Type.Params.List) > 0 {
-	//	return nil, nil
-	//}
 	params := make([]*Field, 0)
 	if method.Type.Params != nil {
 		for _, param := range method.Type.Params.List {
@@ -92,9 +89,6 @@ func (s *StructParser) parserMethod(method *ast.FuncDecl) (methodDesc *MethodDes
 	}
 	methodDesc.Params = params
 	// results
-	//if method.Type.Results == nil || method.Type.Results.List == nil || len(method.Type.Results.List) == 0 {
-	//	return nil, nil
-	//}
 	results := make([]*Field, 0)
 	if method.Type.Results != nil {
 		for _, result := range method.Type.Results.List {
@@ -109,7 +103,7 @@ func (s *StructParser) parserMethod(method *ast.FuncDecl) (methodDesc *MethodDes
 	// comment
 	methodDesc.Comments = parseAtComments(method.Doc)
 	methodDesc.Description = parseDescription(methodDesc.Name, method.Doc)
-	methodDesc.Annotations = parseAnnotation(methodDesc.Comments, CurrentAnnotationMode)
+	methodDesc.Annotations = getAnnotationParser(CurrentAnnotationMode).Parse(methodDesc.Comments)
 	return methodDesc, err
 }
 

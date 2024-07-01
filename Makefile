@@ -69,3 +69,10 @@ install:
 
 .PHONY:
 	help deps gen check test citest coverage install all
+
+#release:
+#	@echo "---------------------"
+#	@echo "Building release binary"
+#	@echo "---------------------"
+#	mkdir -p release
+#	CGO_ENABLED=0 GOOS=linux go build -a -ldflags '-s -w' -o release/

@@ -6,6 +6,7 @@ import (
 	"go/parser"
 	"go/token"
 	"os"
+	"path/filepath"
 	"strings"
 )
 
@@ -15,6 +16,17 @@ type FileParser struct {
 
 func GetFileParser(filePath string) *FileParser {
 	return &FileParser{filePath: filePath}
+}
+
+func GetFileNames(directory string) ([]string, error) {
+	fileNames := make([]string, 0)
+	err := filepath.Walk(directory, func(path string, info os.FileInfo, err error) error {
+		if !info.IsDir() && strings.HasSuffix(info.Name(), ".go") {
+			fileNames = append(fileNames, path)
+		}
+		return nil
+	})
+	return fileNames, err
 }
 
 func (f *FileParser) Parse() (*FileDesc, error) {
