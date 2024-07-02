@@ -1,12 +1,12 @@
 {
   "PackageName": "arraymode",
-  "FullPackageName": "github.com/celt237/go-annotation/internal/test/data/arraymode",
+  "FullPackageName": "github.com/celt237/go-annotation/test/data/arraymode",
   "FileName": "arraymode_single_interface.go",
   "Imports": {
     "data": {
       "Name": "data",
       "HasAlias": false,
-      "Path": "github.com/celt237/go-annotation/internal/test/data"
+      "Path": "github.com/celt237/go-annotation/test/data"
     }
   },
   "Interfaces": [
@@ -16,7 +16,7 @@
         "data": {
           "Name": "data",
           "HasAlias": false,
-          "Path": "github.com/celt237/go-annotation/internal/test/data"
+          "Path": "github.com/celt237/go-annotation/test/data"
         }
       },
       "Comments": [

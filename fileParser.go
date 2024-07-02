@@ -1,4 +1,4 @@
-package internal
+package go_annotation
 
 import (
 	"fmt"

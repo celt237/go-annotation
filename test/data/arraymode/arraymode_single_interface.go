@@ -1,6 +1,8 @@
 package arraymode
 
-import "github.com/celt237/go-annotation/internal/test/data"
+import (
+	"github.com/celt237/go-annotation/test/data"
+)
 
 // InterfaceOne  test
 // @annotation

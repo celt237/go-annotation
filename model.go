@@ -1,4 +1,4 @@
-package internal
+package go_annotation
 
 type AnnotationMode string // 注解模式
 

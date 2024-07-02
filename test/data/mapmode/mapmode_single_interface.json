@@ -1,22 +1,22 @@
 {
   "PackageName": "mapmode",
-  "FullPackageName": "github.com/celt237/go-annotation/internal/test/data/mapmode",
-  "FileName": "mapmode_single_struct.go",
+  "FullPackageName": "github.com/celt237/go-annotation/test/data/mapmode",
+  "FileName": "mapmode_single_interface.go",
   "Imports": {
     "data": {
       "Name": "data",
       "HasAlias": false,
-      "Path": "github.com/celt237/go-annotation/internal/test/data"
+      "Path": "github.com/celt237/go-annotation/test/data"
     }
   },
-  "Structs": [
+  "Interfaces": [
     {
-      "Name": "StructOne",
+      "Name": "InterfaceOne",
       "Imports": {
         "data": {
           "Name": "data",
           "HasAlias": false,
-          "Path": "github.com/celt237/go-annotation/internal/test/data"
+          "Path": "github.com/celt237/go-annotation/test/data"
         }
       },
       "Comments": [
@@ -169,5 +169,5 @@
       "Description": "test"
     }
   ],
-  "Interfaces": []
+  "Structs": []
 }

@@ -1,12 +1,12 @@
 {
-  "PackageName": "mapmode",
-  "FullPackageName": "github.com/celt237/go-annotation/internal/test/data/mapmode",
-  "FileName": "mapmode_mult.go",
+  "PackageName": "arraymode",
+  "FullPackageName": "github.com/celt237/go-annotation/test/data/arraymode",
+  "FileName": "arraymode_mult.go",
   "Imports": {
     "data": {
       "Name": "data",
       "HasAlias": false,
-      "Path": "github.com/celt237/go-annotation/internal/test/data"
+      "Path": "github.com/celt237/go-annotation/test/data"
     }
   },
   "Interfaces": [
@@ -16,28 +16,28 @@
         "data": {
           "Name": "data",
           "HasAlias": false,
-          "Path": "github.com/celt237/go-annotation/internal/test/data"
+          "Path": "github.com/celt237/go-annotation/test/data"
         }
       },
       "Comments": [
-        "annotation(id=\"1\", name=\"test\")"
+        "annotation"
       ],
       "Annotations": {
         "annotation": {
           "Name": "annotation",
-          "Attributes": [{"id": "1", "name": "test"}]
+          "Attributes": []
         }
       },
       "Methods": [
         {
           "Name": "Method1",
           "Comments": [
-            "annotation"
+            "annotation test"
           ],
           "Annotations": {
             "annotation": {
               "Name": "annotation",
-              "Attributes": []
+              "Attributes": [{"0": "test"}]
             }
           },
           "Params": [
@@ -77,12 +77,12 @@
         {
           "Name": "Method2",
           "Comments": [
-            "annotation(name=\"test\")"
+            "annotation test"
           ],
           "Annotations": {
             "annotation": {
               "Name": "annotation",
-              "Attributes": [{"name": "test"}]
+              "Attributes": [{"0": "test"}]
             }
           },
           "Params": [
@@ -115,12 +115,12 @@
         {
           "Name": "Method3",
           "Comments": [
-            "annotation(name=\"test\")"
+            "annotation test"
           ],
           "Annotations": {
             "annotation": {
               "Name": "annotation",
-              "Attributes": [{"name": "test"}]
+              "Attributes": [{"0": "test"}]
             }
           },
           "Params": [],
@@ -145,12 +145,12 @@
         {
           "Name": "Method4",
           "Comments": [
-            "annotation(name=\"test\", des=\"test2\")"
+            "annotation test  test2"
           ],
           "Annotations": {
             "annotation": {
               "Name": "annotation",
-              "Attributes": [{"name": "test", "des": "test2"}]
+              "Attributes": [{"0": "test", "1": "test2"}]
             }
           },
           "Params": [
@@ -176,28 +176,28 @@
         "data": {
           "Name": "data",
           "HasAlias": false,
-          "Path": "github.com/celt237/go-annotation/internal/test/data"
+          "Path": "github.com/celt237/go-annotation/test/data"
         }
       },
       "Comments": [
-        "annotation(id=\"1\", name=\"test\")"
+        "annotation"
       ],
       "Annotations": {
         "annotation": {
           "Name": "annotation",
-          "Attributes": [{"id": "1", "name": "test"}]
+          "Attributes": []
         }
       },
       "Methods": [
         {
           "Name": "Method1",
           "Comments": [
-            "annotation"
+            "annotation test"
           ],
           "Annotations": {
             "annotation": {
               "Name": "annotation",
-              "Attributes": []
+              "Attributes": [{"0": "test"}]
             }
           },
           "Params": [
@@ -237,12 +237,12 @@
         {
           "Name": "Method2",
           "Comments": [
-            "annotation(name=\"test\")"
+            "annotation test"
           ],
           "Annotations": {
             "annotation": {
               "Name": "annotation",
-              "Attributes": [{"name": "test"}]
+              "Attributes": [{"0": "test"}]
             }
           },
           "Params": [
@@ -275,12 +275,12 @@
         {
           "Name": "Method3",
           "Comments": [
-            "annotation(name=\"test\")"
+            "annotation test"
           ],
           "Annotations": {
             "annotation": {
               "Name": "annotation",
-              "Attributes": [{"name": "test"}]
+              "Attributes": [{"0": "test"}]
             }
           },
           "Params": [],
@@ -305,12 +305,12 @@
         {
           "Name": "Method4",
           "Comments": [
-            "annotation(name=\"test\", des=\"test2\")"
+            "annotation test  test2"
           ],
           "Annotations": {
             "annotation": {
               "Name": "annotation",
-              "Attributes": [{"name": "test", "des": "test2"}]
+              "Attributes": [{"0": "test", "1": "test2"}]
             }
           },
           "Params": [
