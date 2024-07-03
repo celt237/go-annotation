@@ -105,7 +105,7 @@ func parseField(field *ast.Field) (fieldDesc *Field, err error) {
 	}
 	fieldDesc.DataType = exprToString(field.Type)
 	if strings.HasPrefix(fieldDesc.DataType, "*") {
-		fieldDesc.RealDataType = fieldDesc.DataType[1:]
+		fieldDesc.RealDataType = strings.Replace(fieldDesc.DataType, "*", "", -1)
 		fieldDesc.IsPtr = true
 	} else {
 		fieldDesc.RealDataType = fieldDesc.DataType
