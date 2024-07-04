@@ -50,7 +50,7 @@ func (s *StructParser) Parse() (*StructDesc, error) {
 		Methods:     methods,
 		Imports:     s.parserImports(methods),
 		Comments:    comments,
-		Annotations: getAnnotationParser(CurrentAnnotationMode).Parse(comments),
+		Annotations: getAnnotationParser(currentAnnotationMode).Parse(comments),
 	}
 	return sDesc, nil
 }
@@ -103,7 +103,7 @@ func (s *StructParser) parserMethod(method *ast.FuncDecl) (methodDesc *MethodDes
 	// comment
 	methodDesc.Comments = parseAtComments(method.Doc)
 	methodDesc.Description = parseDescription(methodDesc.Name, method.Doc)
-	methodDesc.Annotations = getAnnotationParser(CurrentAnnotationMode).Parse(methodDesc.Comments)
+	methodDesc.Annotations = getAnnotationParser(currentAnnotationMode).Parse(methodDesc.Comments)
 	return methodDesc, err
 }
 

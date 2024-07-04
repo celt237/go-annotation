@@ -2,4 +2,4 @@ package go_annotation
 
 const AnnotationPrefix = "@"
 
-var CurrentAnnotationMode = AnnotationModeArray
+var currentAnnotationMode = AnnotationModeArray

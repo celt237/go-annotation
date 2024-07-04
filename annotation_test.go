@@ -79,7 +79,7 @@ func TestAnnotation(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			CurrentAnnotationMode = tt.mode
+			currentAnnotationMode = tt.mode
 			fileParser := GetFileParser(tt.fileName)
 			fileDesc, err := fileParser.Parse()
 			if (err != nil) != tt.wantErr {
